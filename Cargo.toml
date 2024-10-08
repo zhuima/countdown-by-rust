@@ -11,11 +11,8 @@ edition = "2021"
 dioxus = { version = "0.5", features = ["web", "router"] }
 chrono = { version = "0.4", features = ["wasmbind"] }
 tokio = { version = "1.0", features = ["rt", "macros", "time"] }
-js-sys = "0.3"
 log = "0.4.22"
-gloo-timers =  "0.3"
 web-sys = { version = "0.3", features = ["console"] }
-wasm-bindgen = "0.2"
 
 
 # Debug

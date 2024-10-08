@@ -7,10 +7,7 @@ use dioxus_logger::tracing::{info, Level};
 // use components::{Countdown, SettingsModal};
 use components::{Countdown, SettingsModal};
 // use components::Countdown;
-use chrono::{ Utc, Duration};
-
-
-
+use chrono::{Duration, Utc};
 
 #[derive(Clone, Routable, Debug, PartialEq)]
 enum Route {
@@ -33,7 +30,10 @@ fn App() -> Element {
 #[component]
 fn Home() -> Element {
     let mut target_date = use_signal(|| Utc::now());
-    info!("before Home component rendered with target date: {}", target_date.read());
+    info!(
+        "before Home component rendered with target date: {}",
+        target_date.read()
+    );
 
     let mut show_settings = use_signal(|| false);
 
@@ -46,18 +46,22 @@ fn Home() -> Element {
         show_settings.set(false);
     };
 
-
     // 使用 use_effect 来监听 target_date 的变化
     use_effect(move || {
         info!("target_date updated: {}", target_date.read());
     });
 
-    info!("Home component rendered with target date: {}", target_date.read());
+    info!(
+        "Home component rendered with target date: {}",
+        target_date.read()
+    );
 
     // let target_date = use_signal(|| Utc::now() + Duration::days(10));
 
-
-    info!("Home component rendered with target date: {}", target_date.read());
+    info!(
+        "Home component rendered with target date: {}",
+        target_date.read()
+    );
 
     rsx! {
         div { class: "min-h-screen bg-gradient-to-b from-blue-900 to-purple-900 flex flex-col items-center justify-center text-white",
@@ -68,18 +72,18 @@ fn Home() -> Element {
                 SocialIcon { icon: "github" }
                 SocialIcon { icon: "twitter" }
             }
-            footer { class: "mt-16 text-sm",
+            footer { class: "mt-16 text-sm font-light",
                 "Designed with ❤️ by "
                 a {
                     href: "https://twitter.com/ilovek8s",
                     target: "_blank",
                     rel: "noopener noreferrer",
-                    class: "text-gray-300 hover:text-white transition-colors",
+                    class: "text-gray-300 hover:text-white transition-colors font-light",
                     "@ilovek8s"
                 }
             }
             div {
-                class: "absolute bottom-4 right-4 cursor-pointer",
+                class: "absolute bottom-8 right-8 cursor-pointer",
                 onclick: open_settings,
                 svg {
                     xmlns: "http://www.w3.org/2000/svg",
@@ -116,8 +120,8 @@ fn SocialIcon(icon: &'static str) -> Element {
     };
 
     rsx! {
-        a { 
-            href: "#", 
+        a {
+            href: "#",
             class: "text-gray-400 hover:text-white transition-colors",
             svg {
                 xmlns: "http://www.w3.org/2000/svg",

@@ -1,7 +1,6 @@
+use chrono::{DateTime, Duration, Utc};
 use dioxus::prelude::*;
-use chrono::{DateTime, Utc, Duration};
 use log::info;
-use gloo_timers::callback::Interval;
 use web_sys::console;
 
 #[component]
@@ -19,34 +18,41 @@ pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
         }
     });
 
-        // 使用 web_sys::console 进行日志输出
-        console::log_1(&format!("Countdown component rendered with target date: {:?}", *target_date.read()).into());
+    // 使用 web_sys::console 进行日志输出
+    console::log_1(
+        &format!(
+            "Countdown component rendered with target date: {:?}",
+            *target_date.read()
+        )
+        .into(),
+    );
 
+    info!(
+        "Countdown component rendered with target date: {}",
+        target_date
+    );
 
-
-    info!("Countdown component rendered with target date: {}", target_date);
-
-
-    console::log_1(&format!("Countdown component remaining_time: {:?}", *remaining_time.read()).into());
+    console::log_1(
+        &format!(
+            "Countdown component remaining_time: {:?}",
+            *remaining_time.read()
+        )
+        .into(),
+    );
     let days = remaining_time.read().num_days();
     let hours = remaining_time.read().num_hours() % 24;
     let minutes = remaining_time.read().num_minutes() % 60;
     let seconds = remaining_time.read().num_seconds() % 60;
 
-
-
-
     rsx! {
-        div { class: "flex flex-col items-center",
-            div { class: "flex space-x-4",
-                TimeUnit { value: days, label: "Days" }
-                div { class: "text-2xl font-bold self-center", ":" }
-                TimeUnit { value: hours, label: "Hours" }
-                div { class: "text-2xl font-bold self-center", ":" }
-                TimeUnit { value: minutes, label: "Minutes" }
-                div { class: "text-2xl font-bold self-center", ":" }
-                TimeUnit { value: seconds, label: "Seconds" }
-            }
+        div { class: "flex flex-row items-center justify-center space-x-4",
+            TimeUnit { value: days, label: "Days" }
+            div { class: "text-2xl font-bold text-white self-center", ":" }
+            TimeUnit { value: hours, label: "Hours" }
+            div { class: "text-2xl font-bold text-white self-center", ":" }
+            TimeUnit { value: minutes, label: "Minutes" }
+            div { class: "text-2xl font-bold text-white self-center", ":" }
+            TimeUnit { value: seconds, label: "Seconds" }
         }
     }
 }
@@ -54,12 +60,12 @@ pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
 #[component]
 fn TimeUnit(value: i64, label: &'static str) -> Element {
     rsx! {
-        div { class: "flex flex-col items-center",
-            div { 
-                class: "bg-gray-800 rounded-lg p-1 mb-2 relative overflow-hidden w-24 h-24",
-                FlipCard { value: value }
+        div { class: "flex flex-col items-center mx-2",
+            div {
+                class: "bg-white bg-opacity-20 rounded-xl p-4 mb-2 w-24 h-24 flex items-center justify-center",
+                div { class: "text-4xl font-bold text-white", "{value:02}" }
             }
-            div { class: "text-sm font-medium text-gray-500 uppercase", "{label}" }
+            div { class: "text-sm font-medium text-white uppercase tracking-wide", "{label}" }
         }
     }
 }
