@@ -60,15 +60,19 @@ fn Home() -> Element {
     );
 
     rsx! {
-        div { class: "min-h-screen bg-gradient-to-b from-blue-900 to-purple-900 flex flex-col items-center justify-center text-white",
-            h1 { class: "text-5xl font-light mb-12", "We're launching soon" }
+        div { class: "min-h-screen bg-gradient-to-b from-blue-900 to-purple-900 flex flex-col items-center justify-center text-white px-4 sm:px-6 lg:px-8",
+            h1 { 
+                class: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center",
+                "We're launching soon"
+            }
             Countdown { target_date: target_date }
-            div { class: "mt-16 flex space-x-6",
+            div { class: "mt-8 sm:mt-10 md:mt-12 lg:mt-16 flex space-x-4 sm:space-x-6",
                 SocialIcon { icon: "facebook" }
                 SocialIcon { icon: "github" }
                 SocialIcon { icon: "twitter" }
             }
-            footer { class: "mt-16 text-sm font-light",
+            footer { 
+                class: "mt-8 sm:mt-10 md:mt-12 lg:mt-16 text-sm font-light text-center",
                 "Designed with ❤️ by "
                 a {
                     href: "https://twitter.com/ilovek8s",

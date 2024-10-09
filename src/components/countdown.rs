@@ -1,10 +1,9 @@
 use chrono::{DateTime, Duration, Utc};
 use dioxus::prelude::*;
+use futures_lite::stream::StreamExt;
+use gloo_timers::future::IntervalStream;
 use log::info;
 use web_sys::console;
-use gloo_timers::future::IntervalStream;
-use futures_lite::StreamExt;
-
 
 #[component]
 pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
@@ -29,7 +28,6 @@ pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
         }
     });
 
-
     use_effect(move || {
         to_owned![target_date, remaining_time];
         info!("target_date changed: {:?}", *target_date.read());
@@ -41,7 +39,6 @@ pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
             *remaining_time.write() = Duration::zero();
         }
     });
-
 
     // 使用 web_sys::console 进行日志输出
     console::log_1(
