@@ -30,17 +30,10 @@ fn App() -> Element {
 #[component]
 fn Home() -> Element {
     let mut target_date = use_signal(|| Utc::now() + Duration::days(7)); // 默认7天
-
-    // let mut target_date = use_signal(|| Utc::now());
-    info!(
-        "before Home component rendered with target date: {}",
-        target_date.read()
-    );
-
+    let mut custom_message = use_signal(|| String::from("We're launching soon"));
     let mut show_settings = use_signal(|| false);
 
     let open_settings = move |_| show_settings.set(true);
-
 
     // 使用 use_effect 来监听 target_date 的变化
     use_effect(move || {
@@ -63,7 +56,7 @@ fn Home() -> Element {
         div { class: "min-h-screen bg-gradient-to-b from-blue-900 to-purple-900 flex flex-col items-center justify-center text-white px-4 sm:px-6 lg:px-8",
             h1 { 
                 class: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center",
-                "We're launching soon"
+                "{custom_message}"
             }
             Countdown { target_date: target_date }
             div { class: "mt-8 sm:mt-10 md:mt-12 lg:mt-16 flex space-x-4 sm:space-x-6",
@@ -110,8 +103,9 @@ fn Home() -> Element {
             {show_settings().then(|| rsx!(
                 SettingsModal {
                     on_close: move |_| show_settings.set(false),
-                    on_save: move |days: i64| {
+                    on_save: move |(days, message): (i64, String)| {
                         target_date.set(Utc::now() + Duration::days(days));
+                        custom_message.set(message);
                         show_settings.set(false);
                     }
                 }
