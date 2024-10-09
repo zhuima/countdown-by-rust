@@ -2,12 +2,10 @@
 
 mod components;
 
+use chrono::{Duration, Utc};
+use components::{Countdown, SettingsModal};
 use dioxus::prelude::*;
 use dioxus_logger::tracing::{info, Level};
-// use components::{Countdown, SettingsModal};
-use components::{Countdown, SettingsModal};
-// use components::Countdown;
-use chrono::{Duration, Utc};
 
 #[derive(Clone, Routable, Debug, PartialEq)]
 enum Route {
@@ -24,6 +22,21 @@ fn main() {
 fn App() -> Element {
     rsx! {
         Router::<Route> {}
+        title { "Countdown Timer" }
+        meta { name: "description", content: "A simple countdown timer with Rust" }
+        meta { name: "keywords", content: "countdown, timer, rust" }
+        meta { name: "canonical", content: "https://countdown.666222.best" }
+        meta { name: "viewport", content: "width=device-width, initial-scale=1.0" }
+        meta { name: "og:title", content: "Countdown Timer" }
+        meta { name: "og:type", content: "website" }
+        meta { name: "og:description", content: "A simple countdown timer with Rust" }
+        meta { name: "og:image", content: "/og-image.jpg" }
+        meta { name: "og:url", content: "https://countdown.666222.best" }
+        meta { name: "twitter:card", content: "summary_large_image" }
+        meta { name: "twitter:site", content: "https://x.com/ilovek8s" }
+        meta { name: "twitter:title", content: "Countdown Timer" }
+        meta { name: "twitter:description", content: "A simple countdown timer with Rust" }
+        meta { name: "twitter:image", content: "/og-image.jpg" }
     }
 }
 
@@ -54,7 +67,7 @@ fn Home() -> Element {
 
     rsx! {
         div { class: "min-h-screen bg-gradient-to-b from-blue-900 to-purple-900 flex flex-col items-center justify-center text-white px-4 sm:px-6 lg:px-8",
-            h1 { 
+            h1 {
                 class: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light mb-6 sm:mb-8 md:mb-10 lg:mb-12 text-center",
                 "{custom_message}"
             }
@@ -64,7 +77,7 @@ fn Home() -> Element {
                 SocialIcon { icon: "github" }
                 SocialIcon { icon: "twitter" }
             }
-            footer { 
+            footer {
                 class: "mt-8 sm:mt-10 md:mt-12 lg:mt-16 text-sm font-light text-center",
                 "Designed with ❤️ by "
                 a {
