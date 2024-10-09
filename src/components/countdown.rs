@@ -45,13 +45,13 @@ pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
     let seconds = remaining_time.read().num_seconds() % 60;
 
     rsx! {
-        div { class: "flex flex-row items-center justify-center space-x-4",
+        div { class: "grid grid-cols-2 gap-4 py-6 px-10 md:flex md:items-center md:justify-between md:mt-2  rounded-xl md:px-6 md:py-8 ",
             TimeUnit { value: days, label: "Days" }
-            div { class: "text-2xl font-bold text-white self-center", ":" }
+            div { class: " hidden text-3xl -mt-8 md:inline-block md:text-5xl font-normal text-gray-50 ", ":" }
             TimeUnit { value: hours, label: "Hours" }
-            div { class: "text-2xl font-bold text-white self-center", ":" }
+            div { class: " hidden text-3xl -mt-8 md:inline-block md:text-5xl font-normal text-gray-50 ", ":" }
             TimeUnit { value: minutes, label: "Minutes" }
-            div { class: "text-2xl font-bold text-white self-center", ":" }
+            div { class: " hidden text-3xl -mt-8 md:inline-block md:text-5xl font-normal text-gray-50 ", ":" }
             TimeUnit { value: seconds, label: "Seconds" }
         }
     }
