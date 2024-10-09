@@ -29,7 +29,9 @@ fn App() -> Element {
 
 #[component]
 fn Home() -> Element {
-    let mut target_date = use_signal(|| Utc::now());
+    let mut target_date = use_signal(|| Utc::now() + Duration::days(7)); // 默认7天
+
+    // let mut target_date = use_signal(|| Utc::now());
     info!(
         "before Home component rendered with target date: {}",
         target_date.read()
@@ -38,13 +40,13 @@ fn Home() -> Element {
     let mut show_settings = use_signal(|| false);
 
     let open_settings = move |_| show_settings.set(true);
-    let close_settings = move |_| show_settings.set(false);
-    let save_date = move |days: i64| {
-        let new_date = Utc::now() + Duration::days(days);
-        info!("Saving new date: {}", new_date);
-        target_date.set(new_date);
-        show_settings.set(false);
-    };
+    // let close_settings = move |_| show_settings.set(false);
+    // let save_date = move |days: i64| {
+    //     let new_date = Utc::now() + Duration::days(days);
+    //     info!("Saving new date: {}", new_date);
+    //     target_date.set(new_date);
+    //     show_settings.set(false);
+    // };
 
     // 使用 use_effect 来监听 target_date 的变化
     use_effect(move || {
@@ -100,12 +102,24 @@ fn Home() -> Element {
                 }
             }
             // 修改这里,添加条件渲染
-            if *show_settings.read() {
+            // if *show_settings.read() {
+            //     SettingsModal {
+            //         on_close: close_settings,
+            //         on_save: save_date
+            //     }
+            // }
+
+            {show_settings().then(|| rsx!(
                 SettingsModal {
-                    on_close: close_settings,
-                    on_save: save_date
+                    on_close: move |_| show_settings.set(false),
+                    on_save: move |days: i64| {
+                        target_date.set(Utc::now() + Duration::days(days));
+                        show_settings.set(false);
+                    }
                 }
-            }
+            ))}
+
+
         }
     }
 }

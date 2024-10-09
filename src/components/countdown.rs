@@ -2,21 +2,46 @@ use chrono::{DateTime, Duration, Utc};
 use dioxus::prelude::*;
 use log::info;
 use web_sys::console;
+use gloo_timers::future::IntervalStream;
+use futures_lite::StreamExt;
+
 
 #[component]
 pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
     info!("Countdown component function called");
 
-    // 使用use_memo计算remaining_time
-    let remaining_time = use_memo(move || {
-        let now = Utc::now();
-        let target = *target_date.read();
-        if now < target {
-            target - now
-        } else {
-            Duration::zero()
+    let mut remaining_time = use_signal(|| Duration::zero());
+
+    // 使用use_effect来创建一个定时器
+    use_future(move || async move {
+        let mut interval = IntervalStream::new(1000);
+        while let Some(_) = interval.next().await {
+            let now = Utc::now();
+            let target_value = *target_date.read();
+            if now < target_value {
+                *remaining_time.write() = target_value - now;
+                info!("Remaining time: {:?}", remaining_time.read());
+            } else {
+                *remaining_time.write() = Duration::zero();
+                info!("Countdown finished");
+                break;
+            }
         }
     });
+
+
+    use_effect(move || {
+        to_owned![target_date, remaining_time];
+        info!("target_date changed: {:?}", *target_date.read());
+        let now = Utc::now();
+        let target_value = *target_date.read();
+        if now < target_value {
+            *remaining_time.write() = target_value - now;
+        } else {
+            *remaining_time.write() = Duration::zero();
+        }
+    });
+
 
     // 使用 web_sys::console 进行日志输出
     console::log_1(
@@ -27,11 +52,6 @@ pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
         .into(),
     );
 
-    info!(
-        "Countdown component rendered with target date: {}",
-        target_date
-    );
-
     console::log_1(
         &format!(
             "Countdown component remaining_time: {:?}",
@@ -39,6 +59,7 @@ pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
         )
         .into(),
     );
+
     let days = remaining_time.read().num_days();
     let hours = remaining_time.read().num_hours() % 24;
     let minutes = remaining_time.read().num_minutes() % 60;
