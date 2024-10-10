@@ -22,21 +22,21 @@ fn main() {
 fn App() -> Element {
     rsx! {
         Router::<Route> {}
-        title { "Countdown Timer" }
-        meta { name: "description", content: "A simple countdown timer with Rust" }
-        meta { name: "keywords", content: "countdown, timer, rust" }
-        meta { name: "canonical", content: "https://countdown.666222.best" }
-        meta { name: "viewport", content: "width=device-width, initial-scale=1.0" }
-        meta { name: "og:title", content: "Countdown Timer" }
-        meta { name: "og:type", content: "website" }
-        meta { name: "og:description", content: "A simple countdown timer with Rust" }
-        meta { name: "og:image", content: "https://countdown.666222.best/og-image.jpg" }
-        meta { name: "og:url", content: "https://countdown.666222.best" }
-        meta { name: "twitter:card", content: "summary_large_image" }
-        meta { name: "twitter:site", content: "https://x.com/ilovek8s" }
-        meta { name: "twitter:title", content: "Countdown Timer" }
-        meta { name: "twitter:description", content: "A simple countdown timer with Rust" }
-        meta { name: "twitter:image", content: "https://countdown.666222.best/og-image.jpg" }
+        // title { "Countdown Timer" }
+        // meta { name: "description", content: "A simple countdown timer with Rust" }
+        // meta { name: "keywords", content: "countdown, timer, rust" }
+        // meta { name: "canonical", content: "https://countdown.666222.best" }
+        // meta { name: "viewport", content: "width=device-width, initial-scale=1.0" }
+        // meta { name: "og:title", content: "Countdown Timer" }
+        // meta { name: "og:type", content: "website" }
+        // meta { name: "og:description", content: "A simple countdown timer with Rust" }
+        // meta { name: "og:image", content: "https://countdown.666222.best/og-image.jpg" }
+        // meta { name: "og:url", content: "https://countdown.666222.best" }
+        // meta { name: "twitter:card", content: "summary_large_image" }
+        // meta { name: "twitter:site", content: "https://x.com/ilovek8s" }
+        // meta { name: "twitter:title", content: "Countdown Timer" }
+        // meta { name: "twitter:description", content: "A simple countdown timer with Rust" }
+        // meta { name: "twitter:image", content: "https://countdown.666222.best/og-image.jpg" }
     }
 }
 
