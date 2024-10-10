@@ -2,10 +2,11 @@
 
 mod components;
 
-use chrono::{Duration, Utc};
+use chrono::{Duration, TimeZone, Utc};
 use components::{Countdown, SettingsModal};
 use dioxus::prelude::*;
 use dioxus_logger::tracing::{info, Level};
+use web_sys::window;
 
 #[derive(Clone, Routable, Debug, PartialEq)]
 enum Route {
@@ -42,12 +43,46 @@ fn App() -> Element {
 
 #[component]
 fn Home() -> Element {
-    let mut target_date = use_signal(|| Utc::now() + Duration::days(7)); // 默认7天
-    let mut custom_message = use_signal(|| String::from("We're launching soon"));
+    let default_days = 7;
+    let default_message = "We're launching soon";
+
+    // 从 localStorage 读取保存的数据
+    let saved_end_time = use_memo(move || {
+        window()
+            .and_then(|w| w.local_storage().ok())
+            .flatten()
+            .and_then(|storage| storage.get_item("countdown_end_time").ok())
+            .flatten()
+            .and_then(|value| value.parse::<i64>().ok())
+    });
+
+    let saved_message = use_memo(move || {
+        window()
+            .and_then(|w| w.local_storage().ok())
+            .flatten()
+            .and_then(|storage| storage.get_item("countdown_message").ok())
+            .flatten()
+            .unwrap_or_else(|| default_message.to_string())
+    });
+
+    let mut target_date = use_signal(|| {
+        saved_end_time
+            .as_ref()
+            .map(|end_time| {
+                let now = Utc::now().timestamp();
+                if *end_time > now {
+                    Utc.timestamp_opt(*end_time, 0).unwrap()
+                } else {
+                    Utc::now() + Duration::days(default_days)
+                }
+            })
+            .unwrap_or_else(|| Utc::now() + Duration::days(default_days))
+    });
+
+    let mut custom_message = use_signal(|| saved_message.to_string());
     let mut show_settings = use_signal(|| false);
 
     let open_settings = move |_| show_settings.set(true);
-
     // 使用 use_effect 来监听 target_date 的变化
     use_effect(move || {
         info!("target_date updated: {}", target_date.read());
@@ -113,13 +148,22 @@ fn Home() -> Element {
             //     }
             // }
 
-            {show_settings().then(|| rsx!(
+             {show_settings().then(|| rsx!(
                 SettingsModal {
                     on_close: move |_| show_settings.set(false),
                     on_save: move |(days, message): (i64, String)| {
-                        target_date.set(Utc::now() + Duration::days(days));
-                        custom_message.set(message);
+                        let new_end_time = Utc::now() + Duration::days(days);
+                        target_date.set(new_end_time);
+                        custom_message.set(message.clone());
                         show_settings.set(false);
+
+                        // 保存到 localStorage
+                        if let Some(window) = window() {
+                            if let Ok(Some(storage)) = window.local_storage() {
+                                let _ = storage.set_item("countdown_end_time", &new_end_time.timestamp().to_string());
+                                let _ = storage.set_item("countdown_message", &message);
+                            }
+                        }
                     }
                 }
             ))}

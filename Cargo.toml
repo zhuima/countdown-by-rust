@@ -12,9 +12,10 @@ dioxus = { version = "0.5", features = ["web", "router"] }
 chrono = { version = "0.4", features = ["wasmbind"] }
 tokio = { version = "1.0", features = ["rt", "macros", "time"] }
 log = "0.4.22"
-web-sys = { version = "0.3", features = ["console"] }
+web-sys = { version = "0.3", features = ["console", "Window", "Storage"] }
 gloo-timers = { version = "0.3.0", features = ["futures"] }
 futures-lite = "2.0.0"
+
 
 # Debug
 dioxus-logger = "0.5.1"
