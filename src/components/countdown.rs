@@ -2,12 +2,12 @@ use chrono::{DateTime, Duration, Utc};
 use dioxus::prelude::*;
 use futures_lite::stream::StreamExt;
 use gloo_timers::future::IntervalStream;
-use log::info;
-use web_sys::console;
+// use log::info;
+// use web_sys::console;
 
 #[component]
 pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
-    info!("Countdown component function called");
+    // info!("Countdown component function called");
 
     let mut remaining_time = use_signal(|| Duration::zero());
 
@@ -19,10 +19,10 @@ pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
             let target_value = *target_date.read();
             if now < target_value {
                 *remaining_time.write() = target_value - now;
-                info!("Remaining time: {:?}", remaining_time.read());
+                // info!("Remaining time: {:?}", remaining_time.read());
             } else {
                 *remaining_time.write() = Duration::zero();
-                info!("Countdown finished");
+                // info!("Countdown finished");
                 break;
             }
         }
@@ -30,7 +30,7 @@ pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
 
     use_effect(move || {
         to_owned![target_date, remaining_time];
-        info!("target_date changed: {:?}", *target_date.read());
+        // info!("target_date changed: {:?}", *target_date.read());
         let now = Utc::now();
         let target_value = *target_date.read();
         if now < target_value {
@@ -41,21 +41,21 @@ pub fn Countdown(target_date: Signal<DateTime<Utc>>) -> Element {
     });
 
     // 使用 web_sys::console 进行日志输出
-    console::log_1(
-        &format!(
-            "Countdown component rendered with target date: {:?}",
-            *target_date.read()
-        )
-        .into(),
-    );
+    // console::log_1(
+    //     &format!(
+    //         "Countdown component rendered with target date: {:?}",
+    //         *target_date.read()
+    //     )
+    //     .into(),
+    // );
 
-    console::log_1(
-        &format!(
-            "Countdown component remaining_time: {:?}",
-            *remaining_time.read()
-        )
-        .into(),
-    );
+    // console::log_1(
+    //     &format!(
+    //         "Countdown component remaining_time: {:?}",
+    //         *remaining_time.read()
+    //     )
+    //     .into(),
+    // );
 
     let days = remaining_time.read().num_days();
     let hours = remaining_time.read().num_hours() % 24;

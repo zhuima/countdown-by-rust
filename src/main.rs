@@ -53,17 +53,17 @@ fn Home() -> Element {
         info!("target_date updated: {}", target_date.read());
     });
 
-    info!(
-        "Home component rendered with target date: {}",
-        target_date.read()
-    );
+    // info!(
+    //     "Home component rendered with target date: {}",
+    //     target_date.read()
+    // );
 
     // let target_date = use_signal(|| Utc::now() + Duration::days(10));
 
-    info!(
-        "Home component rendered with target date: {}",
-        target_date.read()
-    );
+    // info!(
+    //     "Home component rendered with target date: {}",
+    //     target_date.read()
+    // );
 
     rsx! {
         div { class: "min-h-screen bg-gradient-to-b from-blue-900 to-purple-900 flex flex-col items-center justify-center text-white px-4 sm:px-6 lg:px-8",
